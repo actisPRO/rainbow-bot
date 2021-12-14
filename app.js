@@ -15,6 +15,13 @@ client.once('ready', () => {
         worker.stdout.on('data', (data) => {
             console.log(`WORKER ${i}: ${data.replace(/[\n\t\r]/g, "")}`);
         })
+        worker.stderr.on('data', (data) => {
+            console.warn(`WORKER ${i}: ${data.replace(/[\n\t\r]/g, "")}`);
+        })
+        worker.on('exit', (code, signal) => {
+            let reason = code ? "Exited with code " + code : "Terminated with signal " + signal;
+            console.error(`WORKER ${i}: ${reason}`);
+        })
 
         workers.push(worker);
     }

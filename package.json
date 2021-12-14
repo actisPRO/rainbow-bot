@@ -1,0 +1,14 @@
+{
+  "name": "rainbow-v2",
+  "version": "1.0.0",
+  "description": "Rainbow bot",
+  "main": "app.js",
+  "author": "Denis Karev",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.3.1"
+  }
+}

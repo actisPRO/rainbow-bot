@@ -16,11 +16,6 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
-    if (interaction.user.id !== '261137595965243393') {
-        await interaction.reply({content: 'Пока что эта команда недоступна', ephemeral: true})
-        return;
-    }
-
     const { commandName } = interaction;
     switch (commandName) {
         case "add":
@@ -71,6 +66,7 @@ async function add(interaction) {
     const role = await guild.roles.resolve(roleData.roleID);
     member.roles.add(role);
 
+    console.log(`MASTER: Fulfilled add request from user ${interaction.member.displayName}#${interaction.user.discriminator}`)
     await interaction.reply({content: ':santa: Ура, теперь у тебя есть новогодняя роль!'});
 }
 
@@ -82,5 +78,6 @@ async function remove(interaction) {
         member.roles.remove(role);
     }
 
+    console.log(`MASTER: Fulfilled remove request from user ${interaction.member.displayName}#${interaction.user.discriminator}`)
     await interaction.reply({content: 'Успешно удалены все новогодние роли', ephemeral: true})
 }

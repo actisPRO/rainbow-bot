@@ -1,6 +1,7 @@
 const {Client, Intents} = require('discord.js');
 const config = require('./config.json')
 const {exec} = require('child_process');
+const util = require("util");
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS]});
 
@@ -12,6 +13,12 @@ client.once('ready', () => {
         createWorker(i);
     }
 });
+
+client.on('rateLimit', (rateLimitInfo) => {
+    console.warn('MASTER: Hit ratelimit!');
+    console.warn(util.inspect(rateLimitInfo))
+})
+
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;

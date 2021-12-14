@@ -4,26 +4,12 @@ const {exec} = require('child_process');
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS]});
 
-let workers = [];
-
 client.once('ready', () => {
     console.log('MASTER: Rainbow master is ready!');
     console.log('MASTER: Launching workers...');
 
     for (let i = 0; i < config.roles.length; ++i) {
-        let worker = exec(`node worker.js ${config.roles[i].workerToken} ${i}`);
-        worker.stdout.on('data', (data) => {
-            console.log(`WORKER ${i}: ${data.replace(/[\n\t\r]/g, "")}`);
-        })
-        worker.stderr.on('data', (data) => {
-            console.warn(`WORKER ${i}: ${data.replace(/[\n\t\r]/g, "")}`);
-        })
-        worker.on('exit', (code, signal) => {
-            let reason = code ? "Exited with code " + code : "Terminated with signal " + signal;
-            console.error(`WORKER ${i}: ${reason}`);
-        })
-
-        workers.push(worker);
+        createWorker(i);
     }
 });
 
@@ -49,6 +35,22 @@ client.on('interactionCreate', async interaction => {
 })
 
 client.login(config.masterToken);
+
+function createWorker(roleIndex) {
+    let worker = exec(`node worker.js ${config.roles[roleIndex].workerToken} ${roleIndex}`);
+    worker.stdout.on('data', (data) => {
+        console.log(`WORKER ${roleIndex}: ${data.replace(/[\n\t\r]/g, "")}`);
+    })
+    worker.stderr.on('data', (data) => {
+        console.warn(`WORKER ${roleIndex}: ${data.replace(/[\n\t\r]/g, "")}`);
+    })
+    worker.on('exit', (code, signal) => {
+        let reason = code ? "Exited with code " + code : "Terminated with signal " + signal;
+        console.error(`WORKER ${roleIndex}: ${reason}.`);
+
+        createWorker(roleIndex);
+    })
+}
 
 async function add(interaction) {
     const guild = await client.guilds.resolve(config.guild);

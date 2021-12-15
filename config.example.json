@@ -1,14 +1,14 @@
 {
-  "masterID": "793432551669628928",
-  "masterToken": "",
-  "guild": "406840993535492109",
-  "delay": 120000,
+  "masterID": "Application ID of the master bot",
+  "masterToken": "Bot token for the master bot",
+  "guild": "Guild ID, where roles should be changed",
+  "delay": 120000, // delay between role updates in milliseconds 
   "roles": [
     {
-      "roleID": "920227307606671361",
-      "alias": "1",
-      "workerToken": "",
-      "colors": [
+      "roleID": "Role ID",
+      "alias": "Name,  which will be received from the slash command (should be the same in AddChoice)",
+      "workerToken": "Bot token for the worker, which will update this role",
+      "colors": [ // HEX colors
         "#ff0000",
         "#00ff00",
         "#0000ff"
